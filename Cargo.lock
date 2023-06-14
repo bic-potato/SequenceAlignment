@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "SequenceAlignment"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "seq_io",
- "serde",
-]
-
-[[package]]
 name = "android-tzdata"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -450,6 +440,16 @@ dependencies = [
  "scoped_threadpool",
  "serde",
  "serde_derive",
+]
+
+[[package]]
+name = "seqtool"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "seq_io",
+ "serde",
 ]
 
 [[package]]

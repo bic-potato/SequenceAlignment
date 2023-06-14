@@ -1,7 +1,7 @@
 /*
  * @Author: ZuoXichen
  * @Date: 2023-06-02 23:11:26
- * @LastEditTime: 2023-06-03 20:43:09
+ * @LastEditTime: 2023-06-13 16:57:17
  * @LastEditors: ZuoXichen
  * @Description:
  */
@@ -27,7 +27,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    Compare {
+    Align {
         #[arg(short = 'n', long)]
         sequence_number: usize,
         #[arg(short, long, default_value_t = 1)]
@@ -46,7 +46,7 @@ enum Commands {
 fn main() {
     let cli = Cli::parse();
     match cli.command {
-        Commands::Compare {
+        Commands::Align {
             sequence_number,
             match_score,
             dismatch_score,
@@ -54,7 +54,7 @@ fn main() {
             fasta_path,
             output_path,
         } => {
-            let mut score_matrix = vec![match_score, dismatch_score, indel_score];
+            let score_matrix = vec![match_score, dismatch_score, indel_score];
             let mut describe_vec = Vec::new();
             // println!("score matrix {:?}", score_matrix);
             let mut reader = Reader::from_path(&fasta_path).expect(
@@ -86,7 +86,7 @@ fn main() {
                             "--------------------------------------------------------------------"
                         );
                     } else {
-                        let mut f = File::create(output_path).unwrap();
+                        let f = File::create(output_path).unwrap();
                         let mut buf_writer = BufWriter::new(f);
                         buf_writer
                             .write(format!("@ Sequence Alignment Result File\n").as_bytes())
@@ -109,7 +109,7 @@ fn main() {
                         buf_writer.flush().unwrap();
                     }
                 } else {
-                    let res = align::NeedlemanWunch(
+                    let res = align::needleman_wunch(
                         &sequences_vec[0],
                         &sequences_vec[1],
                         &score_matrix
@@ -129,7 +129,7 @@ fn main() {
                             "--------------------------------------------------------------------"
                         );
                     } else {
-                        let mut f = File::create(output_path).unwrap();
+                        let f = File::create(output_path).unwrap();
                         let mut buf_writer = BufWriter::new(f);
                         buf_writer
                             .write(format!("@ Sequence Alignment Result File\n").as_bytes())
